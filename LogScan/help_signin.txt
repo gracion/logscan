@@ -1,0 +1,16 @@
+LogScan scans QR and barcodes from ID badges and equipment labels for resource tracking.
+
+The Sign-in tab scanner accepts any integer as a unique identifer for a person signing in. The first scan of a person's code signs them in, a later scan signs them out.
+
+To preload names with identifier numbers, import Person and Product Data by opening a CSV file on the phone and choosing "LogScan". Columns must be in a specific order. Export Person and Product data from the Send tab to see the format.
+
+QR Codes may contain full names along with numbers so that you don't have to import as CSV. Make the QR with a period and slash, thus: FIRST.LAST/NUMBER
+
+If a code is not present in the Person database, scanning prompts you to enter a name.
+
+At the end of your event, export your reports (CSV format) from the Send tab. Switch on the report(s) to send, then tap the Share icon. To print your report, use any spreadsheeet program.
+
+For a sample barcode set and complete instructions, visit our support page at https://gracion.com/logscan .
+
+Copyright ©2015-2021 Gracion Software and Paul A. Collins
+LogScan Version 2.0

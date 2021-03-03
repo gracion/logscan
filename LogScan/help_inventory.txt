@@ -1,0 +1,15 @@
+LogScan scans QR and barcodes from ID badges and equipment labels for personnel and resource tracking.
+
+The Logistics tab handles equipment tracking. An equipment barcode (or QR code) is two numbers: a type number for the type of equipment (such as a radio model) and an ID number for the individual piece. They must be separated by a hypen.
+
+For a sample barcode set and complete instructions, visit our support page at https://gracion.com/logscan .
+
+To check out an item, scan the item and the team member (or tap 1-8 to represent the team). You can scan either one first. To check an item back in, scan the item.
+
+Scanning a new team member number prompts you to enter a name. Equipment is identified only by number until you import Person and Product Data. To import names, first scan a few test items and persons, then use the Utilities view to export to a spreadsheet program. Add or rename items and persions, save as .csv, then import the new data into LogScan using the standard Open In… command (for example, open an email with a CSV attachment on your device.)
+
+At the end of your event, export your reports (CSV format) from the Send view. Switch on the report(s) to send, then tap the Share icon. To print your report, use any spreadsheeet program.
+
+
+Copyright ©2015-2021 Gracion Software and Paul A. Collins
+LogScan Version 2.0
