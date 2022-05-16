@@ -57,6 +57,7 @@ typedef enum : NSUInteger {
 - (IBAction)clearAction:(id)sender;
 - (IBAction)closeAction:(id)sender;
 - (IBAction)teamButtonAction:(id)sender;
+- (IBAction)switchCameraAction:(id)sender;
 
 
 @end

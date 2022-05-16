@@ -22,11 +22,6 @@
 	return kSignIn;
 }
 
-- (void)addAction:(id)sender
-{
-	[self performSegueWithIdentifier: @"showSigninScanner" sender: self];
-}
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];

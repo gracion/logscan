@@ -34,7 +34,6 @@ typedef enum : NSUInteger {
 
 @property (strong, nonatomic) FileImporter *fileImporter;
 @property (weak, nonatomic) LogsViewController *logisticsTableViewController;
-@property (weak, nonatomic) LogsViewController *signinTableViewController;
 @property (weak, nonatomic) SendViewController *sendViewController;
 
 + (AppDelegate *)myApp;

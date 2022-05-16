@@ -12,6 +12,7 @@
 #import "FileImporter.h"
 #import "LogsViewController.h"
 #import "SendViewController.h"
+#import "SigninRootViewController.h"
 
 #import "Person+CoreDataProperties.h"
 #import "Product+CoreDataProperties.h"
@@ -56,13 +57,13 @@
 	UITabBarController *tabCtrlr = (UITabBarController *)self.window.rootViewController;
 	
 	// Pass moc to logistics and signin main controllers
-	UINavigationController *nav = tabCtrlr.viewControllers[0];
+	UINavigationController *nav = tabCtrlr.viewControllers[1];
 	self.logisticsTableViewController = (LogsViewController *)nav.topViewController;
 	_logisticsTableViewController.managedObjectContext = self.managedObjectContext;
-	nav = tabCtrlr.viewControllers[1];
-	self.signinTableViewController = (LogsViewController *)nav.topViewController;
-	_signinTableViewController.managedObjectContext = self.managedObjectContext;
-//	nav = tabCtrlr.viewControllers[2];
+	nav = tabCtrlr.viewControllers[0];
+	SigninRootViewController *signInRootVC = (SigninRootViewController *)nav.topViewController;
+	signInRootVC.managedObjectContext = self.managedObjectContext;
+
 	self.sendViewController = (SendViewController *)tabCtrlr.viewControllers[2];
 	_sendViewController.managedObjectContext = self.managedObjectContext;
 

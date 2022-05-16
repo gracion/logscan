@@ -49,6 +49,8 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 
 @property (nonatomic, strong) Product *currentLocation;
 
+@property (nonatomic, assign) AVCaptureDevicePosition captureDevicePosition;
+
 @end
 
 @implementation ScanViewController
@@ -62,6 +64,7 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 	[self clearAction:nil];
 	self.resultText.text = @"";
 	self.codeObjects = [NSMutableArray arrayWithCapacity:9];
+	self.captureDevicePosition = AVCaptureDevicePositionUnspecified;
 }
 
 
@@ -103,8 +106,27 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 - (AVCaptureSession *)captureSession {
 	if (!_captureSession) {
 		NSError *error = nil;
+
+		AVCaptureDevice *device;
+		AVCaptureDeviceDiscoverySession *session = [AVCaptureDeviceDiscoverySession
+					discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera]
+										  mediaType:AVMediaTypeVideo
+										   position:AVCaptureDevicePositionUnspecified];
+		
+		// find device in last used or default position
+		for (AVCaptureDevice *captureDevice in session.devices) {
+			if (captureDevice.position == self.captureDevicePosition) {
+				device = captureDevice;
+			}
+		}
+		
+		if (!device)
+		{
+			// last resort if somehow not found
+			device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+		}
+		
 		// Faster focus
-		AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
 		if (device.isAutoFocusRangeRestrictionSupported) {
 			if ([device lockForConfiguration:&error]) {
 				[device setAutoFocusRangeRestriction:AVCaptureAutoFocusRangeRestrictionNear];
@@ -141,6 +163,109 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 		[self.readerView.layer addSublayer:self.targetLayer];
 	}
 	return _captureSession;
+}
+
+
+- (void)switchToOtherCamera
+{
+	if (!self.captureSession)
+	{
+		return;
+	}
+	
+	[self.captureSession beginConfiguration];
+	AVCaptureDeviceInput *currentCameraInput;
+	
+	// Remove current (video) input
+	for (AVCaptureDeviceInput *input in self.captureSession.inputs) {
+		if ([input.device hasMediaType:AVMediaTypeVideo]) {
+		//	[self.captureSession removeInput:input]; // ddiag do after early returns?
+			
+			currentCameraInput = input;
+			break;
+		}
+	}
+	
+	if (!currentCameraInput) return;
+	
+	// Switch device position
+	if (currentCameraInput.device.position == AVCaptureDevicePositionBack) {
+		self.captureDevicePosition = AVCaptureDevicePositionFront;
+	} else {
+		self.captureDevicePosition = AVCaptureDevicePositionBack;
+	}
+	
+	// Select new camera
+	AVCaptureDevice *newCamera;
+		AVCaptureDeviceDiscoverySession *session = [AVCaptureDeviceDiscoverySession
+					discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera]
+										  mediaType:AVMediaTypeVideo
+										   position:AVCaptureDevicePositionUnspecified];
+
+	for (AVCaptureDevice *captureDevice in session.devices) {
+		if (captureDevice.position == self.captureDevicePosition) {
+			newCamera = captureDevice;
+		}
+	}
+	
+	if (!newCamera) return;
+	
+	[self.captureSession removeInput:currentCameraInput];
+	
+	// Add new camera input
+	NSError *error;
+	AVCaptureDeviceInput *newVideoInput = [[AVCaptureDeviceInput alloc] initWithDevice:newCamera error:&error];
+	if (!error && [self.captureSession canAddInput:newVideoInput]) {
+		[self.captureSession addInput:newVideoInput];
+	}
+	
+	[self.captureSession commitConfiguration];
+}
+
+
+
+
+
+// fix landscape orientation
+// TODO: Detect rotation 180 degrees at once, which does not call viewDidLayoutSubviews
+// Suggested: -viewWillTransitionToSize:withTransitionCoordinator: and possibly
+// notifyWhenInteractionChangesUsingBlock:
+
+- (void)viewDidLayoutSubviews
+{
+	[super viewDidLayoutSubviews];
+	if (self.previewLayer)
+	{
+		UIInterfaceOrientation ori = [[UIApplication sharedApplication] statusBarOrientation];
+		AVCaptureConnection *cc = self.previewLayer.connection;
+		if ([cc isVideoOrientationSupported])
+		{
+			switch (ori) {
+				case UIInterfaceOrientationPortrait:
+				case UIInterfaceOrientationUnknown:
+					cc.videoOrientation = AVCaptureVideoOrientationPortrait;
+					break;
+				case UIInterfaceOrientationLandscapeLeft:
+					cc.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
+					break;
+				case UIInterfaceOrientationLandscapeRight:
+					cc.videoOrientation = AVCaptureVideoOrientationLandscapeRight;
+					break;
+				case UIInterfaceOrientationPortraitUpsideDown:
+					cc.videoOrientation = AVCaptureVideoOrientationPortraitUpsideDown;
+					break;
+				default:
+					break;
+			}
+		}
+	}
+}
+
+
+- (void)setPreviewConnection:(AVCaptureConnection *)cc toOrientation:(AVCaptureVideoOrientation)ori
+{
+	cc.videoOrientation = ori;
+	
 }
 
 
@@ -302,7 +427,13 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 }
 
 
+- (IBAction)switchCameraAction:(id)sender {
+	[self switchToOtherCamera];
+}
+
+
 // Shortcut to log a team by number instead of a person
+//
 - (IBAction)teamButtonAction:(id)sender {
 	NSUInteger num = [sender tag];
 	if (num < 1)
