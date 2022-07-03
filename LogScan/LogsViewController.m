@@ -280,10 +280,7 @@ NSString * const kItemFName = @"LogScanLog";
 	// Let's save immediately now that we have a complete event
 	[[AppDelegate myApp] saveContext];
 	
-	if (self.useType == kSignIn)
-	{
-		[self notifySignIn:(ItemUse *)newManagedObject isIn:YES];
-	}
+	[self notifySignIn:(ItemUse *)newManagedObject isIn:YES];
 }
 
 
@@ -314,6 +311,9 @@ NSString * const kItemFName = @"LogScanLog";
 		[obj setValue:[NSDate date] forKey:@"inTime"];
 		// Must save now to avoid stale index in controller:didChangeObject:
 		[[AppDelegate myApp] saveContext];
+		
+		[self notifySignIn:(ItemUse *)obj isIn:NO];
+		
 		return obj;
 	}
 	return nil;
@@ -343,8 +343,21 @@ NSString * const kItemFName = @"LogScanLog";
 		NSString *token = [[NSString alloc] initWithData:tokenData encoding:NSUTF8StringEncoding];
 		CFRelease( result );
 		
-		NSString *msg = [NSString stringWithFormat:@"Signed %@ %@ %@", isIn ? @"in" : @"out",
+		NSString *msg = nil;
+		if ([itemUse.itemTypeID intValue] == 0)
+		{
+			msg = [NSString stringWithFormat:@"Signed %@ %@ %@", isIn ? @"in" : @"out",
 						 itemUse.givenName, itemUse.surname];
+		}
+		else
+		{
+			msg = [NSString stringWithFormat:@"Checked %@ %@ %@ %@ %@ %@",
+					isIn ? @"out" : @"in",
+					itemUse.product.title,
+					itemUse.itemNumber,
+					isIn ? @"to" : @"from",
+					itemUse.givenName, itemUse.surname];
+		}
 		// To get the channel_id, you're supposed to use the Mattermost command line.
 		// https://docs.mattermost.com/administration/command-line-tools.html
 		// But I gave up and got it directly by browsing the SQL database on the server.

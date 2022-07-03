@@ -90,10 +90,7 @@
 	[[AppDelegate myApp] setNeedsSave];
 	[self configureView];
 	
-	if ([[self.detailItem valueForKey:@"useType"] intValue] == kSignIn)
-	{
-		[_master notifySignIn:(ItemUse *)self.detailItem isIn:NO];
-	}
+	[_master notifySignIn:(ItemUse *)self.detailItem isIn:NO];
 }
 
 

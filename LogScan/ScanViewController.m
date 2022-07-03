@@ -639,6 +639,9 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 		[self ignoreLastScan];
 	}]];
 
+	// This is required by runtime (as of SDK 15) for UIAlertControllerStyleActionSheet
+	ctrlr.popoverPresentationController.sourceView = self.view;
+
 	[self presentViewController:ctrlr animated:YES completion:nil];
 }
 
