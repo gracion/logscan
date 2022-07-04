@@ -57,6 +57,9 @@
 	    self.surnameLabel.text = [self.detailItem valueForKey:@"surname"];
 		self.givenLabel.text = [self.detailItem valueForKey:@"givenName"];
 		self.personIDLabel.text = [[self.detailItem valueForKey:@"personID"] stringValue];
+		NSString *phone = [self.detailItem valueForKeyPath:@"person.cellPhone"];
+		self.cellPhoneLabel.text = phone ? phone : @"";
+		
 		NSNumber *itemID =(NSNumber *)[self.detailItem valueForKey:@"itemTypeID"];
 		self.itemIDLabel.text = [itemID stringValue];
 		NSString *productName =  [self.detailItem valueForKeyPath:@"product.title"];

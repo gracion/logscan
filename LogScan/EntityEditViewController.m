@@ -23,8 +23,8 @@
 	// prep UI
 	self.nameField.text = [self.editObj valueForKey:@"surname"];
 	self.givenNameField.text = [self.editObj valueForKey:@"givenName"];
+	self.phoneField.text = [self.editObj valueForKey:@"cellPhone"];
 	self.idField.text = [[self.editObj valueForKey:@"personID"] stringValue];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {

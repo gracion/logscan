@@ -139,6 +139,7 @@
 		DACE1AA61AEA14A500981F9E /* ItemStatusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStatusTableViewCell.m; sourceTree = "<group>"; };
 		DACE1AA81AEA1C3400981F9E /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		DACE1AA91AEA1C3400981F9E /* out.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = out.png; sourceTree = "<group>"; };
+		DAD6F83B28725F8100076D60 /* LogScan 2.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LogScan 2.2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -591,12 +592,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = UV6CVZH9K5;
 				INFOPLIST_FILE = LogScan/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gracion.LogScan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -610,12 +611,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = UV6CVZH9K5;
 				INFOPLIST_FILE = LogScan/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gracion.LogScan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -689,10 +690,11 @@
 		DACE1A4B1AE9C31D00981F9E /* LogScan.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				DAD6F83B28725F8100076D60 /* LogScan 2.2.xcdatamodel */,
 				DA19343F2594EDBE00F46212 /* LogScan 2.xcdatamodel */,
 				DACE1A4C1AE9C31D00981F9E /* LogScan.xcdatamodel */,
 			);
-			currentVersion = DA19343F2594EDBE00F46212 /* LogScan 2.xcdatamodel */;
+			currentVersion = DAD6F83B28725F8100076D60 /* LogScan 2.2.xcdatamodel */;
 			path = LogScan.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

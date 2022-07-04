@@ -20,6 +20,7 @@
 @dynamic modified;
 @dynamic personID;
 @dynamic surname;
+@dynamic cellPhone;
 @dynamic items;
 
 @end

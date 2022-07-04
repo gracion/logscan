@@ -29,6 +29,8 @@ typedef enum: NSUInteger {
 @property (weak, nonatomic) IBOutlet UITabBarItem *sendTabBarItem;
 @property (weak, nonatomic) IBOutlet UISwitch *inventorySwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *signInSwitch;
+@property (weak, nonatomic) IBOutlet UIButton *clearAllButton;
+@property (weak, nonatomic) IBOutlet UIButton *sendReportButton;
 
 - (IBAction)exportPersonProductData:(id)sender;
 // Request to clear log entries, with are you sure.

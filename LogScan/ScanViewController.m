@@ -724,11 +724,13 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 	if (self.personID > 0) {
 		self.personIDLabel.text = [@(self.personID) stringValue];
 		self.editButton.enabled = YES;
+		self.phoneTextField.text = self.phone ? self.phone : @"";
 	}
 	else
 	{
 		self.personIDLabel.text = @"";
 		self.editButton.enabled = NO;
+		self.phoneTextField.text = @"";
 	}
 	
 	if (self.itemNumber > 0)
@@ -741,6 +743,7 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 		self.itemNumberLabel.text = @"";
 		self.itemNameLabel.text = @"";
 	}
+	
 	if (self.wasLogged)
 	{
 		if (self.myMaster.useType == kSignIn)
@@ -834,9 +837,11 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 		if ([pers.surname length] > 0) {
 			self.surname = pers.surname;
 			self.givenName = pers.givenName;
+			self.phone = pers.cellPhone;
 		} else {
 			self.surname = nil;
 			self.givenName = nil;
+			self.phone = nil;
 			if (self.myMaster.useType == kSignIn)
 			{
 				[self performSegueWithIdentifier:@"signPersonEdit" sender:pers];
@@ -881,8 +886,12 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 	self.surname = name;
 	// Given name may be blank
 	self.givenName = [editVC.givenNameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	self.phone = [editVC.phoneField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	
+	
 	[obj setValue:name forKey:@"surname"];
 	[obj setValue:self.givenName forKey:@"givenName"];
+	[obj setValue:self.phone forKey:@"cellPhone"];
 	
 	[[AppDelegate myApp] saveContext];
 	
@@ -890,5 +899,19 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 	[self processResult:ScannedPerson];
 }
 
+
+// Cell phone field only
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	if (textField == self.phoneTextField)
+	{
+		[textField resignFirstResponder];
+		self.phone = [self.phoneTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		[self.personObj setValue:self.phone forKey:@"cellPhone"];
+		
+		[[AppDelegate myApp] saveContext];
+	}
+	
+	return YES;
+}
 
 @end

@@ -40,7 +40,8 @@ extern NSString * const kCSVFileDateFormat;
 // Clear all items from log (both?)
 - (IBAction)clearLogEntries:(id)sender
 {
-	[self askUser:@"Are you sure you want to clear all log entries?" actionTitle:@"Clear All" cancelTitle:@"Cancel" destructive:YES onViewController:self];
+	CGRect rect = self.clearAllButton.frame;
+	[self askUser:@"Are you sure you want to clear all log entries?" actionTitle:@"Clear All" cancelTitle:@"Cancel" destructive:YES onViewController:self inRect:rect];
 }
 
 
@@ -129,7 +130,7 @@ extern NSString * const kCSVFileDateFormat;
 	
 	
 	UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-
+	activityViewController.popoverPresentationController.sourceView = self.sendReportButton;
 	[self presentViewController:activityViewController animated:YES completion:nil];
 }
 
@@ -170,7 +171,7 @@ extern NSString * const kCSVFileDateFormat;
 	NSMutableString *str;
 	if ( useType == kInventory)
 	{
-		str = [[NSMutableString alloc] initWithString:@"Date Out,Time Out,Date In,Time In,ItemTypeID,ItemNumber,ItemName,PersonID,Surname,Given Name\n"];
+		str = [[NSMutableString alloc] initWithString:@"Date Out,Time Out,Date In,Time In,ItemTypeID,ItemNumber,ItemName,PersonID,Surname,Given Name,Cell Phone\n"];
 		
 		for (NSManagedObject *obj in objs)
 		{
@@ -178,7 +179,7 @@ extern NSString * const kCSVFileDateFormat;
 			NSNumber *itemID =(NSNumber *)[obj valueForKey:@"itemTypeID"];
 			NSString *productName = [obj valueForKeyPath:@"product.title"];
 			
-			NSString *line = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@,%@,%@,%@\n",
+			NSString *line = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@,%@,%@,%@,%@\n",
 							  [dateFmtr stringFromDate:[obj valueForKey:@"outTime"]],
 							  [timeFmtr stringFromDate:[obj valueForKey:@"outTime"]],
 							  inTime ? [dateFmtr stringFromDate:[obj valueForKey:@"inTime"]] : @"",
@@ -188,19 +189,20 @@ extern NSString * const kCSVFileDateFormat;
 							  productName,
 							  [[obj valueForKey:@"personID"]  stringValue],
 							  [obj valueForKey:@"surname"],
-							  [obj valueForKey:@"givenName"]];
+							  [obj valueForKey:@"givenName"],
+							  [obj valueForKeyPath:@"person.cellPhone"]];
 			[str appendString:line];
 		}
 	}
 	else
 	{
 		// signin
-		str = [[NSMutableString alloc] initWithString:@"Date In,Time In,Date Out,Time out,PersonID,Surname,Given Name\n"];
+		str = [[NSMutableString alloc] initWithString:@"Date In,Time In,Date Out,Time out,PersonID,Surname,Given Name,Cell Phone\n"];
 		
 		for (NSManagedObject *obj in objs)
 		{
 			NSDate *inTime = [obj valueForKey:@"inTime"];
-			NSString *line = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@\n",
+			NSString *line = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@,%@\n",
 							  // Remember, these are reversed meaning for signins
 							  [dateFmtr stringFromDate:[obj valueForKey:@"outTime"]],
 							  [timeFmtr stringFromDate:[obj valueForKey:@"outTime"]],
@@ -208,7 +210,8 @@ extern NSString * const kCSVFileDateFormat;
 							  inTime ? [timeFmtr stringFromDate:[obj valueForKey:@"inTime"]] : @"",
 							  [[obj valueForKey:@"personID"]  stringValue],
 							  [obj valueForKey:@"surname"],
-							  [obj valueForKey:@"givenName"]];
+							  [obj valueForKey:@"givenName"],
+							  [obj valueForKeyPath:@"person.cellPhone"]];
 			[str appendString:line];
 		}
 		
@@ -273,20 +276,21 @@ extern NSString * const kCSVFileDateFormat;
 
 - (NSString *)csvFromPersonsAndProducts
 {
-	NSMutableString *str = [[NSMutableString alloc] initWithString:@"Entity,ID,Modified,Title,Surname,Given Name,Level,Affiliation\n"];
+	NSMutableString *str = [[NSMutableString alloc] initWithString:@"Entity,ID,Modified,Title,Surname,Given Name,Level,Affiliation,Cell Phone\n"];
 	NSDateFormatter *dateFmtr = [[NSDateFormatter alloc] init];
 	[dateFmtr setDateFormat:kCSVFileDateFormat];
 	
 	NSArray *objs = [self allObjectsOfEntityName:@"Person" sortedBy:@[@"surname", @"givenName"]];
 	for (Person *per in objs)
 	{
-		NSString *line = [NSString stringWithFormat:@"Person,%@,%@,,%@,%@,%@,%@\n",
+		NSString *line = [NSString stringWithFormat:@"Person,%@,%@,,%@,%@,%@,%@,%@\n",
 						  [per personID],
 						  [dateFmtr stringFromDate:[per modified]],
 						  [per surname] ? [per surname] : [NSString stringWithFormat:@"Person %@", [per personID]],
 						  [per givenName] ? [per givenName] : @"",
 						  [per level] ? [per level] : @"",
-						  [per affiliation] ? [per affiliation] : @""];
+						  [per affiliation] ? [per affiliation] : @"",
+						  [per cellPhone] ? [per cellPhone] : @""];
 		[str appendString:line];
 	}
 	objs = [self allObjectsOfEntityName:@"Product" sortedBy:@[@"title", @"productID"]];
@@ -311,7 +315,7 @@ extern NSString * const kCSVFileDateFormat;
 
 
 - (void)askUser:(NSString *)question actionTitle:(NSString *)atitle cancelTitle:(NSString *)ctitle
-	destructive:(BOOL)isScary onViewController:(UIViewController *)vc
+	destructive:(BOOL)isScary onViewController:(UIViewController *)vc inRect:(CGRect)rect
 {
 	UIAlertController *ctrlr = [UIAlertController alertControllerWithTitle:question message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 	[ctrlr addAction:[UIAlertAction actionWithTitle:atitle style:isScary ? UIAlertActionStyleDestructive : UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -320,6 +324,11 @@ extern NSString * const kCSVFileDateFormat;
 	[ctrlr addAction:[UIAlertAction actionWithTitle:ctitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		[self performOnAnswer:NO onController:self];
 	}]];
+	
+	// This is required by runtime (as of SDK 15) for UIAlertControllerStyleActionSheet
+	ctrlr.popoverPresentationController.sourceView = self.view;
+	ctrlr.popoverPresentationController.sourceRect = rect;
+
 	[vc presentViewController:ctrlr animated:YES completion:nil];
 }
 

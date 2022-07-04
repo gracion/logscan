@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSDate *modified;
 @property (nullable, nonatomic, retain) NSNumber *personID;
 @property (nullable, nonatomic, retain) NSString *surname;
+@property (nullable, nonatomic, retain) NSString *cellPhone;
 @property (nullable, nonatomic, retain) NSSet<ItemUse *>  *items;
 
 @end

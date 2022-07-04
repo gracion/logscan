@@ -69,7 +69,8 @@ NSString * const kCSVFileDateFormat = @"yyyy-MM-dd HH:mm";
 	NSString *csv = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:error];
 	if (csv) {
 		// Each line starts with Person or Product, else ignore (such as headers)
-		// Entity, ID, Modified, Title (product name), Surname, Given Name, Level (#), Affiliation
+		// Entity, ID, Modified, Title (product name), Surname, Given Name, Level (#), Affiliation,
+		// Cell Phone, (todo:)Member Since
 		NSArray *lines = [csv componentsSeparatedByString:@"\n"];
 		NSInteger persCount = 0, prodCount = 0, entriesCount = 0;
 		LogScanFileType type = PersonProductFileType;
@@ -116,7 +117,11 @@ NSString * const kCSVFileDateFormat = @"yyyy-MM-dd HH:mm";
 						{
 							person.affiliation = cells[7];
 						}
-						// TODO 8th column: MemberSince
+						if ([cells count] >=9)
+						{
+							person.cellPhone = cells[8];
+						}
+						// TODO 9th column: MemberSince
 						
 						persCount++;
 					}

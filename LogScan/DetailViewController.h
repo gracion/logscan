@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *surnameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *givenLabel;
 @property (weak, nonatomic) IBOutlet UILabel *personIDLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cellPhoneLabel;
 @property (weak, nonatomic) IBOutlet UILabel *itemNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *itemIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberLabel;

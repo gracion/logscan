@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *idField;
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *givenNameField;
+@property (weak, nonatomic) IBOutlet UITextField *phoneField;
+
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *givenLabel;
 
