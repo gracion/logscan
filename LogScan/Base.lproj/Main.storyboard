@@ -1520,15 +1520,28 @@ Long</string>
                                     <action selector="switchCameraAction:" destination="XK2-kT-y4F" eventType="touchUpInside" id="PtM-j1-7uL"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XaX-4N-nHs">
+                                <rect key="frame" x="553" y="20" width="97" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="97" id="lBa-PO-ye2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
+                                <connections>
+                                    <outlet property="delegate" destination="XK2-kT-y4F" id="SIC-H4-4pR"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="wcu-k4-9LQ" firstAttribute="top" secondItem="TaB-Ak-Jt6" secondAttribute="bottom" constant="8" symbolic="YES" id="1an-cy-jdB"/>
                             <constraint firstItem="zvh-pb-2wv" firstAttribute="top" secondItem="vF8-Q7-Req" secondAttribute="bottom" constant="76" id="4yN-OV-LJ9"/>
+                            <constraint firstItem="TaB-Ak-Jt6" firstAttribute="leading" secondItem="XaX-4N-nHs" secondAttribute="trailing" constant="8" symbolic="YES" id="9eg-IT-Vgp"/>
                             <constraint firstItem="zDA-Mi-Xfo" firstAttribute="top" secondItem="vF8-Q7-Req" secondAttribute="bottom" constant="20" id="DWE-P8-WIu"/>
                             <constraint firstItem="zvh-pb-2wv" firstAttribute="leading" secondItem="mBt-7d-5Fd" secondAttribute="leadingMargin" id="E74-uD-B6m"/>
                             <constraint firstItem="L7g-DP-bb6" firstAttribute="top" secondItem="Es4-XY-qFq" secondAttribute="bottom" constant="8" id="LNn-iC-cCG"/>
                             <constraint firstItem="TaB-Ak-Jt6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NEh-qD-aNx" secondAttribute="trailing" constant="8" symbolic="YES" id="Myh-vP-YTQ"/>
+                            <constraint firstItem="XaX-4N-nHs" firstAttribute="top" secondItem="vF8-Q7-Req" secondAttribute="bottom" constant="20" id="OIi-gq-miR"/>
                             <constraint firstItem="NEh-qD-aNx" firstAttribute="leading" secondItem="mBt-7d-5Fd" secondAttribute="leadingMargin" id="OUW-po-0Tq"/>
                             <constraint firstItem="TaB-Ak-Jt6" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zDA-Mi-Xfo" secondAttribute="trailing" constant="8" symbolic="YES" id="Pdz-h8-hR5"/>
                             <constraint firstAttribute="trailing" secondItem="wcu-k4-9LQ" secondAttribute="trailing" constant="12" id="Q8m-xD-NPM"/>
@@ -1565,6 +1578,7 @@ Long</string>
                     </view>
                     <connections>
                         <outlet property="editButton" destination="0cB-2J-hvy" id="BtL-B7-bFY"/>
+                        <outlet property="idEntryField" destination="XaX-4N-nHs" id="nUc-2K-mFJ"/>
                         <outlet property="inOutView" destination="p9c-oS-nQg" id="IOG-Xu-eDB"/>
                         <outlet property="nameLabel" destination="17q-2z-jTP" id="tCW-gk-lQe"/>
                         <outlet property="personIDLabel" destination="8hC-kE-GBW" id="fyL-zW-YAa"/>

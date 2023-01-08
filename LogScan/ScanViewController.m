@@ -900,7 +900,7 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 }
 
 
-// Cell phone field only
+// Cell phone field or ID entry
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	if (textField == self.phoneTextField)
 	{
@@ -909,6 +909,20 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 		[self.personObj setValue:self.phone forKey:@"cellPhone"];
 		
 		[[AppDelegate myApp] saveContext];
+	}
+	else if (textField == self.idEntryField)
+	{
+		[textField resignFirstResponder];
+		
+		// treat like a scan
+		NSString *code = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+		if (code.length > 0)
+		{
+			self.resultText.text = code;
+			[self scanIn:code];
+			self.lastScanData = code; // this has to be after scanIn is called.
+		}
+		textField.text = @"";
 	}
 	
 	return YES;

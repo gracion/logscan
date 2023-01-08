@@ -37,6 +37,7 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UIImageView *inOutView;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTextField;
+@property (weak, nonatomic) IBOutlet UITextField *idEntryField;
 
 @property (weak, nonatomic) LogsViewController *myMaster;
 
