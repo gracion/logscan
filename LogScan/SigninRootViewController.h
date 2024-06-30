@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SigninRootViewController : UIViewController
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (weak, nonatomic) IBOutlet UILabel *camArrow;
+@property (weak, nonatomic) IBOutlet UILabel *camArrowLabel;
 
 @end
 

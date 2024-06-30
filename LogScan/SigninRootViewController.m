@@ -26,6 +26,12 @@
 	{
 		[self insertScanButton];
 	}
+	
+	// Show/hide camera button
+	   [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDeviceOrientationChange:) 
+                                                 name:UIDeviceOrientationDidChangeNotification 
+                                               object:nil];
 }
 
 
@@ -51,6 +57,16 @@
 			self.navigationItem.rightBarButtonItem = nil;
 		}
 	}
+}
+
+
+- (void)handleDeviceOrientationChange:(NSNotification *)notification
+{
+	// camera arrow
+	// TODO: this will be wrong for new devices with camera on the long side
+	BOOL hideArrow = [[UIApplication sharedApplication] statusBarOrientation] != UIInterfaceOrientationLandscapeRight;
+	self.camArrow.hidden = hideArrow;
+	self.camArrowLabel.hidden = hideArrow;
 }
 
 
