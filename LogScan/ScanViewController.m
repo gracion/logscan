@@ -14,6 +14,7 @@
 #import "HelpViewController.h"
 #import "LogsViewController.h"
 #import "ItemUse+CoreDataProperties.h"
+#import "PeopleSearchPanelViewController.h"
 #import "Person+CoreDataProperties.h"
 #import "Product+CoreDataProperties.h"
 #import <AVFoundation/AVFoundation.h>
@@ -65,6 +66,7 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 	self.resultText.text = @"";
 	self.codeObjects = [NSMutableArray arrayWithCapacity:9];
 	self.captureDevicePosition = AVCaptureDevicePositionUnspecified;
+	self.switchCameraButton.titleLabel.text = @"";
 }
 
 
@@ -393,6 +395,13 @@ CGMutablePathRef createPathForPoints(NSArray* points) {
 		NSString *help = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
 		[(HelpViewController *)[segue destinationViewController] setHelpText:help];
 	}
+	else if ([segue.identifier isEqualToString:@"EmbedPeopleSearchPanel"])
+	{
+		PeopleSearchPanelViewController *panelVC = (PeopleSearchPanelViewController *)segue.destinationViewController;
+
+ 		panelVC.managedObjectContext = self.myMaster.managedObjectContext;
+		panelVC.scanViewController = self;
+ 	}
 }
 
 

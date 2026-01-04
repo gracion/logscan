@@ -57,6 +57,7 @@
 		DACE1AA71AEA14A500981F9E /* ItemStatusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE1AA61AEA14A500981F9E /* ItemStatusTableViewCell.m */; };
 		DACE1AAA1AEA1C3400981F9E /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = DACE1AA81AEA1C3400981F9E /* back.png */; };
 		DACE1AAB1AEA1C3400981F9E /* out.png in Resources */ = {isa = PBXBuildFile; fileRef = DACE1AA91AEA1C3400981F9E /* out.png */; };
+		DAD54C482F0A1151001A9FAD /* PeopleSearchPanelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD54C472F0A1151001A9FAD /* PeopleSearchPanelViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,6 +140,8 @@
 		DACE1AA61AEA14A500981F9E /* ItemStatusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemStatusTableViewCell.m; sourceTree = "<group>"; };
 		DACE1AA81AEA1C3400981F9E /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		DACE1AA91AEA1C3400981F9E /* out.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = out.png; sourceTree = "<group>"; };
+		DAD54C462F0A1151001A9FAD /* PeopleSearchPanelViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeopleSearchPanelViewController.h; sourceTree = "<group>"; };
+		DAD54C472F0A1151001A9FAD /* PeopleSearchPanelViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeopleSearchPanelViewController.m; sourceTree = "<group>"; };
 		DAD6F83B28725F8100076D60 /* LogScan 2.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "LogScan 2.2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -246,6 +249,8 @@
 				DACE1A4F1AE9C31D00981F9E /* LogsViewController.m */,
 				DA7EB64E2573F94200230539 /* LogisticsTableViewController.h */,
 				DA7EB64F2573F94200230539 /* LogisticsTableViewController.m */,
+				DAD54C462F0A1151001A9FAD /* PeopleSearchPanelViewController.h */,
+				DAD54C472F0A1151001A9FAD /* PeopleSearchPanelViewController.m */,
 				DA38DC3C2598548C00CD99BF /* SettingsViewController.h */,
 				DA38DC3D2598548C00CD99BF /* SettingsViewController.m */,
 				DA25FF6F2831AEE900A3047C /* SigninRootViewController.h */,
@@ -423,6 +428,7 @@
 				DACE1AA71AEA14A500981F9E /* ItemStatusTableViewCell.m in Sources */,
 				DACE1A4D1AE9C31D00981F9E /* LogScan.xcdatamodeld in Sources */,
 				DABFAAD41BEFF3AB00CCEBFC /* Server.m in Sources */,
+				DAD54C482F0A1151001A9FAD /* PeopleSearchPanelViewController.m in Sources */,
 				DABFAADC1BEFF3AB00CCEBFC /* Person.m in Sources */,
 				DA7EB6592573F95500230539 /* SigninTableViewController.m in Sources */,
 				DABFAADA1BEFF3AB00CCEBFC /* Person+CoreDataProperties.m in Sources */,
@@ -595,6 +601,7 @@
 				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 2F2U9294B6;
 				INFOPLIST_FILE = LogScan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				MARKETING_VERSION = 2.2;
@@ -614,6 +621,7 @@
 				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 2F2U9294B6;
 				INFOPLIST_FILE = LogScan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				MARKETING_VERSION = 2.2;

@@ -38,6 +38,7 @@ typedef enum : NSUInteger {
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTextField;
 @property (weak, nonatomic) IBOutlet UITextField *idEntryField;
+@property (weak, nonatomic) IBOutlet UIButton *switchCameraButton;
 
 @property (weak, nonatomic) LogsViewController *myMaster;
 
@@ -61,6 +62,9 @@ typedef enum : NSUInteger {
 - (IBAction)closeAction:(id)sender;
 - (IBAction)teamButtonAction:(id)sender;
 - (IBAction)switchCameraAction:(id)sender;
+
+// shared methods
+- (void)scanIn:(NSString *)input;
 
 
 @end
