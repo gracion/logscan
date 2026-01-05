@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UITextField *serverTextField;
 @property (weak, nonatomic) IBOutlet UITextField *userTextField;
 @property (weak, nonatomic) IBOutlet UITextField *tokenTextField;
+@property (weak, nonatomic) IBOutlet UITextField *googleKeyField;
+@property (weak, nonatomic) IBOutlet UITextField *googleURLField;
 
 + (NSDictionary *)mattermostSearchQuery;
 

@@ -213,6 +213,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dCf-7K-SOt">
+                                <rect key="frame" x="20" y="336" width="27" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJi-ex-Vxm">
                                 <rect key="frame" x="21" y="170.5" width="66" height="36"/>
                                 <constraints>
@@ -241,6 +248,32 @@ ID</string>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwA-Lj-a0m">
                                 <rect key="frame" x="21" y="223" width="43.5" height="19.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Google Sheet Apps Script:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPu-v9-2xE">
+                                <rect key="frame" x="21" y="290" width="201" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hev-W8-rvE">
+                                <rect key="frame" x="55" y="328" width="465" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RWy-Os-f8q">
+                                <rect key="frame" x="55" y="378" width="465" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="URL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSh-RW-1iJ">
+                                <rect key="frame" x="20" y="385" width="31" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -274,6 +307,8 @@ ID</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="googleKeyField" destination="hev-W8-rvE" id="jHD-Tq-7s5"/>
+                        <outlet property="googleURLField" destination="RWy-Os-f8q" id="NBc-YC-OXW"/>
                         <outlet property="mattermostSwitch" destination="Tpk-SC-4gh" id="mMa-qb-Ug3"/>
                         <outlet property="serverTextField" destination="hE7-iX-dad" id="BzL-OC-atz"/>
                         <outlet property="tokenTextField" destination="A2U-mX-Ath" id="iWG-26-BSJ"/>
@@ -282,7 +317,7 @@ ID</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Njf-aW-6KB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="650.625" y="773.23943661971828"/>
+            <point key="canvasLocation" x="650.390625" y="772.65625"/>
         </scene>
         <!--Scan View Controller-->
         <scene sceneID="4R0-jD-lBN">
@@ -630,15 +665,37 @@ ID</string>
                                     <segue destination="Eu2-Jc-aSm" kind="presentation" id="Ust-uM-KPe"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="jHv-4d-k9h">
+                                <rect key="frame" x="364" y="424" width="296" height="34.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="296" id="1Ni-ui-GtJ"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Send Sign-in data to Google Sheet"/>
+                                <connections>
+                                    <action selector="sendToGoogleAction:" destination="xpi-08-XYq" eventType="touchUpInside" id="cxZ-Yf-YQf"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q1d-0i-M1L">
+                                <rect key="frame" x="17" y="480" width="992" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Ko7-m7-Lu8" secondAttribute="trailing" constant="15" id="2ws-p2-GbT"/>
+                            <constraint firstItem="Q1d-0i-M1L" firstAttribute="trailing" secondItem="Ko7-m7-Lu8" secondAttribute="trailing" id="9oi-zB-3cR"/>
                             <constraint firstItem="Zee-1c-ieD" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="HT9-ZZ-qwK"/>
                             <constraint firstItem="9Hb-ph-ihf" firstAttribute="top" secondItem="dXP-DN-aG3" secondAttribute="bottom" constant="28" id="HyG-O6-B7e"/>
                             <constraint firstItem="dXP-DN-aG3" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="O4m-FQ-FV0"/>
                             <constraint firstItem="vyH-2M-eCv" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="UGY-qz-hK1"/>
+                            <constraint firstItem="Q1d-0i-M1L" firstAttribute="top" secondItem="jHv-4d-k9h" secondAttribute="bottom" constant="21.5" id="UWW-7o-gLZ"/>
+                            <constraint firstItem="jHv-4d-k9h" firstAttribute="top" secondItem="iG0-bu-wTY" secondAttribute="bottom" constant="33.5" id="Xel-fB-x0m"/>
+                            <constraint firstItem="Q1d-0i-M1L" firstAttribute="leading" secondItem="pEw-qO-H81" secondAttribute="leading" id="agq-BX-yyr"/>
                             <constraint firstItem="8TM-ui-FPg" firstAttribute="top" secondItem="MGv-HC-xkX" secondAttribute="bottom" constant="35" id="b3e-UH-ddS"/>
+                            <constraint firstItem="jHv-4d-k9h" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="bQL-m5-qIO"/>
                             <constraint firstItem="3Hf-Pi-fOX" firstAttribute="top" secondItem="Zee-1c-ieD" secondAttribute="bottom" constant="18" id="blr-nN-vvS"/>
                             <constraint firstItem="Ko7-m7-Lu8" firstAttribute="top" secondItem="5fG-f0-aS1" secondAttribute="bottom" constant="17" id="f0e-QB-Tjh"/>
                             <constraint firstItem="Ko7-m7-Lu8" firstAttribute="leading" secondItem="1Pa-xh-uMH" secondAttribute="leading" constant="17" id="gMd-fV-Bxd"/>
@@ -657,6 +714,7 @@ ID</string>
                     <tabBarItem key="tabBarItem" title="Send" image="paperplane" catalog="system" selectedImage="paperplane" id="6mH-To-MWt"/>
                     <connections>
                         <outlet property="clearAllButton" destination="Zee-1c-ieD" id="3Vq-60-G7b"/>
+                        <outlet property="googleStatusLabel" destination="Q1d-0i-M1L" id="P5Z-0Z-7KD"/>
                         <outlet property="inventorySwitch" destination="5OA-gV-ZeU" id="pvY-WL-rBa"/>
                         <outlet property="sendReportButton" destination="dXP-DN-aG3" id="yOn-4L-ZBu"/>
                         <outlet property="sendTabBarItem" destination="6mH-To-MWt" id="wqv-B6-Aem"/>
@@ -665,7 +723,7 @@ ID</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wzM-sx-ARZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1410" y="-764.78873239436621"/>
+            <point key="canvasLocation" x="1409.765625" y="-764.84375"/>
         </scene>
         <!--Detail-->
         <scene sceneID="Cn3-H9-jdl">
@@ -1582,8 +1640,8 @@ Long</string>
                                 <exclude reference="zDA-Mi-Xfo"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="DWE-P8-WIu"/>
                                 <exclude reference="hVn-wc-YUx"/>
+                                <exclude reference="DWE-P8-WIu"/>
                                 <exclude reference="Pdz-h8-hR5"/>
                             </mask>
                         </variation>
@@ -1592,8 +1650,8 @@ Long</string>
                                 <include reference="zDA-Mi-Xfo"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="DWE-P8-WIu"/>
                                 <include reference="hVn-wc-YUx"/>
+                                <include reference="DWE-P8-WIu"/>
                                 <include reference="Pdz-h8-hR5"/>
                             </mask>
                         </variation>
@@ -1626,6 +1684,10 @@ Long</string>
         <scene sceneID="Y9g-Uf-mzG">
             <objects>
                 <viewController id="oAf-rw-g8T" customClass="PeopleSearchPanelViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4RA-X8-c0a"/>
+                        <viewControllerLayoutGuide type="bottom" id="wbs-8J-lVT"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bt4-CU-zEC">
                         <rect key="frame" x="0.0" y="0.0" width="336" height="478"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -66,6 +66,17 @@
 
 		CFRelease( result );
 	}
+	
+	NSString *obj = [defs objectForKey:@"googleKey"];
+	if ([obj length])
+	{
+		self.googleKeyField.text = @"**********";
+	}
+	obj = [defs objectForKey:@"googleURL"];
+	if ([obj length])
+	{
+		self.googleURLField.text = @"**********";
+	}
 }
 
 /*
@@ -86,6 +97,24 @@
 - (IBAction)saveAction:(id)sender
 {
 	[[NSUserDefaults standardUserDefaults] setBool:_mattermostSwitch.on forKey:@"mattermostNotifyOn"];
+	
+	// Google - store unless it's just showing *****... User can erase by erasing the fields.
+	// Key can't start with "*"
+	// TODO: save in keychain
+	NSString *textStr = self.googleKeyField.text;
+	if (textStr.length == 0 || [textStr characterAtIndex:0] != '*')
+	{
+		[[NSUserDefaults standardUserDefaults] setObject:self.googleKeyField.text
+												  forKey:@"googleKey"];
+	}
+	textStr = self.googleURLField.text;
+	if (textStr.length == 0 || [textStr characterAtIndex:0] != '*')
+	{
+		[[NSUserDefaults standardUserDefaults] setObject:self.googleURLField.text
+												  forKey:@"googleURL"];
+	}
+
+	// Mattermost
 	NSString *server = [self.serverTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	NSString *user = self.userTextField.text;
 	NSData *tokenData = [self.tokenTextField.text dataUsingEncoding:NSUTF8StringEncoding];

@@ -31,11 +31,13 @@ typedef enum: NSUInteger {
 @property (weak, nonatomic) IBOutlet UISwitch *signInSwitch;
 @property (weak, nonatomic) IBOutlet UIButton *clearAllButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendReportButton;
+@property (weak, nonatomic) IBOutlet UILabel *googleStatusLabel;
 
 - (IBAction)exportPersonProductData:(id)sender;
 // Request to clear log entries, with are you sure.
 - (IBAction)clearLogEntries:(id)sender;
 - (IBAction)exportAction:(id)sender;
+- (IBAction)sendToGoogleAction:(id)sender;
 
 #pragma mark - Data Utilities
 

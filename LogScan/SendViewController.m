@@ -24,6 +24,7 @@ extern NSString * const kCSVFileDateFormat;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.googleStatusLabel.text = @"";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,6 +57,216 @@ extern NSString * const kCSVFileDateFormat;
 	}
 	[self export:type inMode:kFile];
 }
+
+
+- (IBAction)sendToGoogleAction:(id)sender
+{
+	self.googleStatusLabel.text = @"Sending...";
+	NSString *csv = [self csvFromItemUses:kSignIn];
+	NSError *err = nil;
+	NSArray<NSString*> *rows = [self jsonBodyFromSimpleCSV:csv error:&err];
+	if (err)
+	{
+		self.googleStatusLabel.text = [NSString stringWithFormat:@"Internal data error: %@",
+									   [err localizedDescription]];
+	}
+	else if ([rows count])
+	{
+		NSString *scriptKey = [[NSUserDefaults standardUserDefaults] objectForKey:@"googleKey"];
+		if ([scriptKey length] == 0)
+		{
+			self.googleStatusLabel.text = @"Google key missing from settings";
+			return;
+		}
+		NSDictionary *payload = @{ @"secret" : scriptKey, @"rows" : rows };
+
+		NSError *jErr = nil;
+		NSData *json =
+			[NSJSONSerialization dataWithJSONObject:payload options:0 error:&jErr];
+
+		if (!json) {
+			self.googleStatusLabel.text = [NSString stringWithFormat:
+					@"JSON serialization failed: %@", [jErr localizedDescription]];
+			return;
+		}
+
+		[self uploadJson:json];
+	}
+}
+
+
+- (void)uploadJson:(NSData *)jsonData
+{
+	NSString *gURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"googleURL"];
+	NSURL *url = [NSURL URLWithString:gURL ? gURL : @""];
+	
+	if (!url)
+	{
+		self.googleStatusLabel.text = @"Google url missing or malformed";
+		return;
+	}
+
+	// Build request
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+	request.HTTPMethod = @"POST";
+	request.HTTPBody = jsonData;
+	request.timeoutInterval = 30.0;
+
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+
+	// Use default session; it follows redirects automatically
+	NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+	NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+
+	NSURLSessionDataTask *task =
+	[session dataTaskWithRequest:request
+				completionHandler:^(NSData * _Nullable data,
+									NSURLResponse * _Nullable response,
+									NSError * _Nullable error)
+	{
+		NSString *rtnData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : @"(no data)";
+
+		if (error)
+		{
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.googleStatusLabel.text = [NSString stringWithFormat:@"Internal task error: %@",
+												   [error localizedDescription]];
+				});
+			return;
+		}
+
+		NSHTTPURLResponse *http = (NSHTTPURLResponse *)response;
+		NSInteger status = http.statusCode;
+
+		if (status < 200 || status >= 300)
+		{
+			NSString *bodyText = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : @"";
+			NSError *statusError =
+				[NSError errorWithDomain:@"Upload"
+									code:status
+								userInfo:@{NSLocalizedDescriptionKey :
+											   [NSString stringWithFormat:@"HTTP %ld %@", (long)status, bodyText ?: @""]}];
+
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.googleStatusLabel.text = [NSString stringWithFormat:@"Cloud error: %@",
+												   [statusError localizedDescription]];
+				});
+			return;
+		}
+
+		// Optional: parse JSON response { ok: true, appended: N }
+		if (data.length > 0)
+		{
+			NSDictionary *resp =
+				[NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+			if (!resp)
+			{
+				NSString *rtn = [[NSString alloc] initWithBytes:data.bytes length:data.length encoding:NSUTF8StringEncoding];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					self.googleStatusLabel.text = [NSString stringWithFormat:@"Server error: %@", rtn];
+				});
+				return;
+			}
+			if ([resp isKindOfClass:[NSDictionary class]] &&
+				[resp[@"ok"] respondsToSelector:@selector(boolValue)] &&
+				![resp[@"ok"] boolValue])
+			{
+				NSError *apiError =
+					[NSError errorWithDomain:@"Upload"
+										code:-2
+									userInfo:@{NSLocalizedDescriptionKey : @"Server returned ok=false"}];
+					dispatch_async(dispatch_get_main_queue(), ^{
+						self.googleStatusLabel.text = [NSString stringWithFormat:@"API error: %@",
+													   [apiError localizedDescription]];
+
+					});
+				return;
+			}
+		}
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+				NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+				formatter.dateStyle = NSDateFormatterMediumStyle;
+				formatter.timeStyle = NSDateFormatterShortStyle;
+				NSString *aDate = [formatter stringFromDate:[NSDate date]];
+				
+				self.googleStatusLabel.text = [NSString stringWithFormat:@"Upload OK (%@)", aDate];
+			});
+	}];
+
+	[task resume];
+}
+
+
+/// Convert a simple positional CSV string into Apps Script JSON:
+/// { "rows": [ [DateIn, TimeIn, DateOut, TimeOut, PersonID, Surname, GivenName, CellPhone], ... ] }
+///
+/// Assumptions:
+/// - First non-empty line is a header
+/// - No quotes
+/// - No commas inside fields
+/// - Exactly 8 columns expected
+- (NSArray<NSString*> *)jsonBodyFromSimpleCSV:(NSString *)csv
+							error:(NSError * __autoreleasing *)errorOut
+{
+	if (csv.length == 0) {
+		if (errorOut) {
+			*errorOut = [NSError errorWithDomain:@"CSVtoJSON"
+											code:1
+										userInfo:@{NSLocalizedDescriptionKey : @"CSV is empty"}];
+		}
+		return nil;
+	}
+
+	// Split into non-empty lines
+	NSArray<NSString *> *rawLines =
+		[csv componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
+	NSMutableArray<NSString *> *lines = [NSMutableArray array];
+	for (NSString *line in rawLines) {
+		NSString *trim =
+			[line stringByTrimmingCharactersInSet:
+				[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		if (trim.length > 0) {
+			[lines addObject:trim];
+		}
+	}
+
+	if (lines.count < 2) {
+		if (errorOut) {
+			*errorOut = [NSError errorWithDomain:@"CSVtoJSON"
+											code:2
+										userInfo:@{NSLocalizedDescriptionKey :
+											@"CSV must contain header + at least one data row"}];
+		}
+		return nil;
+	}
+
+	// Skip header row
+	NSMutableArray<NSArray<NSString *> *> *rows = [NSMutableArray array];
+
+	for (NSUInteger i = 1; i < lines.count; i++) {
+		NSArray<NSString *> *parts = [lines[i] componentsSeparatedByString:@","];
+
+		NSMutableArray<NSString *> *row = [NSMutableArray arrayWithCapacity:8];
+		for (NSUInteger c = 0; c < 8; c++) {
+			NSString *v = (c < parts.count) ? parts[c] : @"";
+			v = [v stringByTrimmingCharactersInSet:
+					[NSCharacterSet whitespaceCharacterSet]];
+
+			if ([v isEqualToString:@"(null)"]) {
+				v = @"";
+			}
+			[row addObject:v];
+		}
+
+		[rows addObject:row];
+	}
+
+	return [NSArray arrayWithArray:rows];
+}
+
 
 - (void)export:(DataType)dt inMode:(ExportType)mode
 {
