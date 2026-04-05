@@ -16,7 +16,10 @@
 
 extern NSString * const kCSVFileDateFormat;
 
-@interface SendViewController ()
+@interface SendViewController () <UITextFieldDelegate>
+
+@property (nonatomic) CGFloat originalViewOriginY;
+@property (nonatomic) BOOL viewIsShifted;
 
 @end
 
@@ -25,12 +28,147 @@ extern NSString * const kCSVFileDateFormat;
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.googleStatusLabel.text = @"";
+	self.defaultHoursField.delegate = self;
+	self.eventNameField.delegate = self;
+	[self configureDefaultHoursPopUp];
+
+	NSString *savedEvent = [[NSUserDefaults standardUserDefaults] stringForKey:@"eventName"];
+	if (savedEvent)
+		self.eventNameField.text = savedEvent;
+	
+	UILongPressGestureRecognizer *lp = [[UILongPressGestureRecognizer alloc]
+		  initWithTarget:self action:@selector(copyStatusLabel:)];
+	  [self.googleStatusLabel addGestureRecognizer:lp];
+	  self.googleStatusLabel.userInteractionEnabled = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
+												 name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
+												 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+	NSDictionary *info = notification.userInfo;
+	CGRect kbFrame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	NSTimeInterval duration = [info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+	UIViewAnimationCurve curve = [info[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+
+	if (!self.viewIsShifted)
+		self.originalViewOriginY = self.view.frame.origin.y;
+
+	CGFloat deadSpace = CGRectGetMaxY(self.view.bounds) - CGRectGetMaxY(self.googleControlsView.frame);
+	CGFloat newY = self.originalViewOriginY - kbFrame.size.height + deadSpace;
+	self.viewIsShifted = YES;
+
+	[UIView animateWithDuration:duration delay:0 options:(curve << 16) animations:^{
+		CGRect frame = self.view.frame;
+		frame.origin.y = newY;
+		self.view.frame = frame;
+	} completion:nil];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+	NSDictionary *info = notification.userInfo;
+	NSTimeInterval duration = [info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+	UIViewAnimationCurve curve = [info[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+
+	self.viewIsShifted = NO;
+
+	// Match the keyboard's animation curve
+	[UIView animateWithDuration:duration delay:0 options:(curve << 16) animations:^{
+		CGRect frame = self.view.frame;
+		frame.origin.y = self.originalViewOriginY;
+		self.view.frame = frame;
+	} completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+- (void)copyStatusLabel:(UILongPressGestureRecognizer *)recognizer
+{
+	 if (recognizer.state == UIGestureRecognizerStateBegan)
+		 [UIPasteboard generalPasteboard].string = self.googleStatusLabel.text;
+	// TODO: This isn't actually a visible effect
+	self.googleStatusLabel.backgroundColor = [UIColor systemBlueColor];
+	  [UIView animateWithDuration:0.6 animations:^{
+		  self.googleStatusLabel.backgroundColor = [UIColor clearColor];
+	  }];
+}
+
+
+#pragma mark - Default Hours
+
+- (void)configureDefaultHoursPopUp
+{
+	double current = [[NSUserDefaults standardUserDefaults] doubleForKey:@"defaultHours"];
+	self.defaultHoursField.text = [NSString stringWithFormat:@"%g", current];
+
+	NSArray<NSNumber *> *options = @[@0.5, @1.0, @1.5, @2.0, @2.5, @3.0, @4.0, @5.0, @6.0, @8.0];
+	NSMutableArray<UIAction *> *actions = [NSMutableArray array];
+	__weak SendViewController *weakSelf = self;
+
+	for (NSNumber *opt in options) {
+		double val = opt.doubleValue;
+		[actions addObject:[UIAction actionWithTitle:[NSString stringWithFormat:@"%g", val]
+											  image:nil identifier:nil
+											handler:^(__kindof UIAction *a) {
+			[weakSelf applyDefaultHours:val];
+		}]];
+	}
+
+	self.defaultHoursPopUp.menu = [UIMenu menuWithTitle:@"" children:actions];
+	self.defaultHoursPopUp.showsMenuAsPrimaryAction = YES;
+}
+
+- (void)applyDefaultHours:(double)hours
+{
+	[[NSUserDefaults standardUserDefaults] setDouble:hours forKey:@"defaultHours"];
+	[self configureDefaultHoursPopUp];
+}
+
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+	if (textField == self.defaultHoursField)
+	{
+		double val = [textField.text doubleValue];
+		[self applyDefaultHours:val];
+	}
+	else if (textField == self.eventNameField)
+	{
+		NSString *name = [textField.text stringByTrimmingCharactersInSet:
+						  [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		[[NSUserDefaults standardUserDefaults] setObject:name forKey:@"eventName"];
+		[[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSinceReferenceDate]
+												  forKey:@"eventNameTimestamp"];
+	}
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+	[textField resignFirstResponder];
+	return YES;
+}
+
 
 // Export the person and product tables as a csv file
 - (IBAction)exportPersonProductData:(id)sender
@@ -61,6 +199,47 @@ extern NSString * const kCSVFileDateFormat;
 
 - (IBAction)sendToGoogleAction:(id)sender
 {
+	static const NSTimeInterval kEventNameMaxAge = 18 * 3600;
+	double ts = [[NSUserDefaults standardUserDefaults] doubleForKey:@"eventNameTimestamp"];
+	NSTimeInterval age = [[NSDate date] timeIntervalSinceReferenceDate] - ts;
+
+	BOOL isEmpty = self.eventNameField.text.length == 0;
+	BOOL isStale = ts == 0 || age > kEventNameMaxAge;
+	if (isEmpty || isStale)
+	{
+		NSString *current = self.eventNameField.text;
+		NSString *message = isEmpty
+			? @"No event name has been entered."
+			: @"The event name hasn't been updated in over 18 hours.";
+		UIAlertController *alert = [UIAlertController
+			alertControllerWithTitle:@"Confirm Event Name"
+							 message:message
+					  preferredStyle:UIAlertControllerStyleAlert];
+		[alert addTextFieldWithConfigurationHandler:^(UITextField *tf) {
+			tf.text = current;
+			tf.placeholder = @"Event name";
+		}];
+		__weak SendViewController *weakSelf = self;
+		[alert addAction:[UIAlertAction actionWithTitle:@"Send" style:UIAlertActionStyleDefault
+											   handler:^(UIAlertAction *a) {
+			NSString *name = [alert.textFields.firstObject.text
+				stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+			weakSelf.eventNameField.text = name;
+			[[NSUserDefaults standardUserDefaults] setObject:name forKey:@"eventName"];
+			[[NSUserDefaults standardUserDefaults] setDouble:[[NSDate date] timeIntervalSinceReferenceDate]
+													  forKey:@"eventNameTimestamp"];
+			[weakSelf proceedWithGoogleSend];
+		}]];
+		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+		[self presentViewController:alert animated:YES completion:nil];
+		return;
+	}
+
+	[self proceedWithGoogleSend];
+}
+
+- (void)proceedWithGoogleSend
+{
 	self.googleStatusLabel.text = @"Sending...";
 	NSString *csv = [self csvFromItemUses:kSignIn];
 	NSError *err = nil;
@@ -81,8 +260,7 @@ extern NSString * const kCSVFileDateFormat;
 		NSDictionary *payload = @{ @"secret" : scriptKey, @"rows" : rows };
 
 		NSError *jErr = nil;
-		NSData *json =
-			[NSJSONSerialization dataWithJSONObject:payload options:0 error:&jErr];
+		NSData *json = [NSJSONSerialization dataWithJSONObject:payload options:0 error:&jErr];
 
 		if (!json) {
 			self.googleStatusLabel.text = [NSString stringWithFormat:
@@ -206,7 +384,7 @@ extern NSString * const kCSVFileDateFormat;
 /// - First non-empty line is a header
 /// - No quotes
 /// - No commas inside fields
-/// - Exactly 8 columns expected
+/// - Exactly 10 columns expected
 - (NSArray<NSString*> *)jsonBodyFromSimpleCSV:(NSString *)csv
 							error:(NSError * __autoreleasing *)errorOut
 {
@@ -249,8 +427,8 @@ extern NSString * const kCSVFileDateFormat;
 	for (NSUInteger i = 1; i < lines.count; i++) {
 		NSArray<NSString *> *parts = [lines[i] componentsSeparatedByString:@","];
 
-		NSMutableArray<NSString *> *row = [NSMutableArray arrayWithCapacity:8];
-		for (NSUInteger c = 0; c < 8; c++) {
+		NSMutableArray<NSString *> *row = [NSMutableArray arrayWithCapacity:10];
+		for (NSUInteger c = 0; c < 10; c++) {
 			NSString *v = (c < parts.count) ? parts[c] : @"";
 			v = [v stringByTrimmingCharactersInSet:
 					[NSCharacterSet whitespaceCharacterSet]];
@@ -408,12 +586,25 @@ extern NSString * const kCSVFileDateFormat;
 	else
 	{
 		// signin
-		str = [[NSMutableString alloc] initWithString:@"Date In,Time In,Date Out,Time out,PersonID,Surname,Given Name,Cell Phone\n"];
-		
+		str = [[NSMutableString alloc] initWithString:@"Date In,Time In,Date Out,Time out,PersonID,Surname,Given Name,Cell Phone,hours,Event Name\n"];
+
+		double defaultHours = [[NSUserDefaults standardUserDefaults] doubleForKey:@"defaultHours"];
+
+		NSString *eventName = [self.eventNameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
 		for (NSManagedObject *obj in objs)
 		{
 			NSDate *inTime = [obj valueForKey:@"inTime"];
-			NSString *line = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@,%@\n",
+
+			double hours = defaultHours;
+			if (inTime)
+			{
+				double rawHours = [inTime timeIntervalSinceDate:[obj valueForKey:@"outTime"]] / 3600.0;
+				if (rawHours >= 0.1)
+					hours = round(rawHours * 10.0) / 10.0;
+			}
+
+			NSString *line = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@,%@,%.1f,%@\n",
 							  // Remember, these are reversed meaning for signins
 							  [dateFmtr stringFromDate:[obj valueForKey:@"outTime"]],
 							  [timeFmtr stringFromDate:[obj valueForKey:@"outTime"]],
@@ -422,10 +613,12 @@ extern NSString * const kCSVFileDateFormat;
 							  [[obj valueForKey:@"personID"]  stringValue],
 							  [obj valueForKey:@"surname"],
 							  [obj valueForKey:@"givenName"],
-							  [obj valueForKeyPath:@"person.cellPhone"]];
+							  [obj valueForKeyPath:@"person.cellPhone"],
+							  hours,
+							  eventName];
 			[str appendString:line];
 		}
-		
+
 	}
 	return str;
 }

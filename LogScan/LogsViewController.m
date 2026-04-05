@@ -73,7 +73,9 @@ NSString * const kItemFName = @"LogScanLog";
 	if ([[segue identifier] isEqualToString:@"showDetail"]) {
 	    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 	    NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-	    [[segue destinationViewController] setDetailItem:object];
+		DetailViewController *dest = [segue destinationViewController];
+		dest.detailItem = object;
+		dest.myMaster = self;
 	}
 	else if ([[segue destinationViewController] isKindOfClass:[ScanViewController class]])
 	{

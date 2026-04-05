@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *withoutScanningButton;
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
-@property (nonatomic, weak) LogsViewController *master;
+@property (nonatomic, weak) LogsViewController *myMaster;
 
 - (IBAction)checkInAction:(id)sender;
 

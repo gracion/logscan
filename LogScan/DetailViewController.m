@@ -35,11 +35,6 @@
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	[self.dateFormatter setDateFormat:@"HH:mm yyyy-MM-dd"];
 	
-	// Get the master view controller
-	NSArray *ctrlrs = [(UINavigationController *)self.parentViewController viewControllers];
-	if ([ctrlrs count])
-		self.master = ctrlrs[0];
-	
 	[self configureView];
 }
 
@@ -93,7 +88,7 @@
 	[[AppDelegate myApp] setNeedsSave];
 	[self configureView];
 	
-	[_master notifySignIn:(ItemUse *)self.detailItem isIn:NO];
+	[_myMaster notifySignIn:(ItemUse *)self.detailItem isIn:NO];
 }
 
 

@@ -32,6 +32,10 @@ typedef enum: NSUInteger {
 @property (weak, nonatomic) IBOutlet UIButton *clearAllButton;
 @property (weak, nonatomic) IBOutlet UIButton *sendReportButton;
 @property (weak, nonatomic) IBOutlet UILabel *googleStatusLabel;
+@property (weak, nonatomic) IBOutlet UITextField *eventNameField;
+@property (weak, nonatomic) IBOutlet UIButton *defaultHoursPopUp;
+@property (weak, nonatomic) IBOutlet UITextField *defaultHoursField;
+@property (weak, nonatomic) IBOutlet UIView *googleControlsView;
 
 - (IBAction)exportPersonProductData:(id)sender;
 // Request to clear log entries, with are you sure.

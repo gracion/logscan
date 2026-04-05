@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -607,7 +608,7 @@ ID</string>
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zee-1c-ieD">
-                                <rect key="frame" x="444" y="720" width="136" height="30"/>
+                                <rect key="frame" x="444" y="719.5" width="136" height="30.5"/>
                                 <state key="normal" title="Clear all Log Entries"/>
                                 <connections>
                                     <action selector="clearLogEntries:" destination="xpi-08-XYq" eventType="touchUpInside" id="cnQ-m8-xMV"/>
@@ -665,48 +666,107 @@ ID</string>
                                     <segue destination="Eu2-Jc-aSm" kind="presentation" id="Ust-uM-KPe"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="jHv-4d-k9h">
-                                <rect key="frame" x="364" y="424" width="296" height="34.5"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KhS-QU-Zey">
+                                <rect key="frame" x="-3" y="404" width="1027" height="295.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="jHv-4d-k9h">
+                                        <rect key="frame" x="364.5" y="20" width="296" height="34.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="296" id="1Ni-ui-GtJ"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Send Sign-in data to Google Sheet"/>
+                                        <connections>
+                                            <action selector="sendToGoogleAction:" destination="xpi-08-XYq" eventType="touchUpInside" id="cxZ-Yf-YQf"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q1d-0i-M1L">
+                                        <rect key="frame" x="20" y="76" width="992" height="82"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="82" id="I0u-2q-H06"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="General Jan 2027" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bpz-Xe-A9q">
+                                        <rect key="frame" x="59" y="216.5" width="526" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BJ1-JZ-Lx7">
+                                        <rect key="frame" x="59" y="181" width="96.5" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rgu-ED-PtT">
+                                        <rect key="frame" x="593" y="216.5" width="32" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Default hours (if no time recorded)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bod-Lg-i71">
+                                        <rect key="frame" x="593" y="181" width="302" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CGp-Ta-38h">
+                                        <rect key="frame" x="633" y="220.5" width="137" height="30"/>
+                                        <menu key="menu" id="jgm-wy-ORK"/>
+                                        <state key="normal" title="Choose new default"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemFillColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="296" id="1Ni-ui-GtJ"/>
+                                    <constraint firstItem="bod-Lg-i71" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="BJ1-JZ-Lx7" secondAttribute="trailing" constant="8" symbolic="YES" id="1n3-5W-qaF"/>
+                                    <constraint firstItem="jHv-4d-k9h" firstAttribute="centerX" secondItem="KhS-QU-Zey" secondAttribute="centerX" constant="-1" id="BZ6-B2-lW7"/>
+                                    <constraint firstItem="Q1d-0i-M1L" firstAttribute="top" secondItem="KhS-QU-Zey" secondAttribute="top" constant="76" id="Bl2-ed-rsq"/>
+                                    <constraint firstItem="BJ1-JZ-Lx7" firstAttribute="baseline" secondItem="bod-Lg-i71" secondAttribute="firstBaseline" id="GOB-oU-qxt"/>
+                                    <constraint firstItem="Q1d-0i-M1L" firstAttribute="leading" secondItem="KhS-QU-Zey" secondAttribute="leading" constant="20" id="Iag-1E-Fey"/>
+                                    <constraint firstItem="BJ1-JZ-Lx7" firstAttribute="leading" secondItem="KhS-QU-Zey" secondAttribute="leading" constant="59" id="LVj-ds-Uxr"/>
+                                    <constraint firstItem="BJ1-JZ-Lx7" firstAttribute="leading" secondItem="bpz-Xe-A9q" secondAttribute="leading" id="LuE-7V-heY"/>
+                                    <constraint firstItem="bpz-Xe-A9q" firstAttribute="top" secondItem="BJ1-JZ-Lx7" secondAttribute="bottom" constant="15" id="Pn3-2F-jHC"/>
+                                    <constraint firstItem="CGp-Ta-38h" firstAttribute="leading" secondItem="Rgu-ED-PtT" secondAttribute="trailing" constant="8" symbolic="YES" id="PsK-q8-OLE"/>
+                                    <constraint firstItem="bod-Lg-i71" firstAttribute="baseline" secondItem="BJ1-JZ-Lx7" secondAttribute="baseline" id="Qc7-gb-mSi"/>
+                                    <constraint firstItem="CGp-Ta-38h" firstAttribute="bottom" secondItem="Rgu-ED-PtT" secondAttribute="bottom" id="SiK-vK-ZZp"/>
+                                    <constraint firstItem="Q1d-0i-M1L" firstAttribute="top" secondItem="jHv-4d-k9h" secondAttribute="bottom" constant="21.5" id="eGV-j2-UiP"/>
+                                    <constraint firstAttribute="trailing" secondItem="Q1d-0i-M1L" secondAttribute="trailing" constant="15" id="gB6-Nm-eVH"/>
+                                    <constraint firstAttribute="trailing" secondItem="bod-Lg-i71" secondAttribute="trailing" constant="132" id="inf-pM-FC2"/>
+                                    <constraint firstItem="CGp-Ta-38h" firstAttribute="bottom" secondItem="bpz-Xe-A9q" secondAttribute="bottom" id="jyj-2D-FT2"/>
+                                    <constraint firstItem="bod-Lg-i71" firstAttribute="leading" secondItem="Rgu-ED-PtT" secondAttribute="leading" id="ksn-Oa-Uck"/>
+                                    <constraint firstItem="Rgu-ED-PtT" firstAttribute="leading" secondItem="bpz-Xe-A9q" secondAttribute="trailing" constant="8" symbolic="YES" id="kyf-Yz-Mvy"/>
+                                    <constraint firstItem="BJ1-JZ-Lx7" firstAttribute="top" secondItem="Q1d-0i-M1L" secondAttribute="bottom" constant="23" id="nCF-nY-lys"/>
+                                    <constraint firstItem="BJ1-JZ-Lx7" firstAttribute="centerY" secondItem="bod-Lg-i71" secondAttribute="centerY" id="okJ-4y-Z6g"/>
+                                    <constraint firstAttribute="trailing" secondItem="CGp-Ta-38h" secondAttribute="trailing" constant="257" id="tK3-oE-Pe9"/>
+                                    <constraint firstItem="CGp-Ta-38h" firstAttribute="top" secondItem="bod-Lg-i71" secondAttribute="bottom" constant="19" id="v4I-v3-vgQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="CGp-Ta-38h" secondAttribute="bottom" constant="45" id="ye1-AM-GsJ"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Send Sign-in data to Google Sheet"/>
-                                <connections>
-                                    <action selector="sendToGoogleAction:" destination="xpi-08-XYq" eventType="touchUpInside" id="cxZ-Yf-YQf"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q1d-0i-M1L">
-                                <rect key="frame" x="17" y="480" width="992" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Ko7-m7-Lu8" secondAttribute="trailing" constant="15" id="2ws-p2-GbT"/>
-                            <constraint firstItem="Q1d-0i-M1L" firstAttribute="trailing" secondItem="Ko7-m7-Lu8" secondAttribute="trailing" id="9oi-zB-3cR"/>
                             <constraint firstItem="Zee-1c-ieD" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="HT9-ZZ-qwK"/>
                             <constraint firstItem="9Hb-ph-ihf" firstAttribute="top" secondItem="dXP-DN-aG3" secondAttribute="bottom" constant="28" id="HyG-O6-B7e"/>
                             <constraint firstItem="dXP-DN-aG3" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="O4m-FQ-FV0"/>
                             <constraint firstItem="vyH-2M-eCv" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="UGY-qz-hK1"/>
-                            <constraint firstItem="Q1d-0i-M1L" firstAttribute="top" secondItem="jHv-4d-k9h" secondAttribute="bottom" constant="21.5" id="UWW-7o-gLZ"/>
-                            <constraint firstItem="jHv-4d-k9h" firstAttribute="top" secondItem="iG0-bu-wTY" secondAttribute="bottom" constant="33.5" id="Xel-fB-x0m"/>
-                            <constraint firstItem="Q1d-0i-M1L" firstAttribute="leading" secondItem="pEw-qO-H81" secondAttribute="leading" id="agq-BX-yyr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="KhS-QU-Zey" secondAttribute="trailing" constant="-20" id="Yi1-F1-fW8"/>
                             <constraint firstItem="8TM-ui-FPg" firstAttribute="top" secondItem="MGv-HC-xkX" secondAttribute="bottom" constant="35" id="b3e-UH-ddS"/>
-                            <constraint firstItem="jHv-4d-k9h" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="bQL-m5-qIO"/>
                             <constraint firstItem="3Hf-Pi-fOX" firstAttribute="top" secondItem="Zee-1c-ieD" secondAttribute="bottom" constant="18" id="blr-nN-vvS"/>
                             <constraint firstItem="Ko7-m7-Lu8" firstAttribute="top" secondItem="5fG-f0-aS1" secondAttribute="bottom" constant="17" id="f0e-QB-Tjh"/>
                             <constraint firstItem="Ko7-m7-Lu8" firstAttribute="leading" secondItem="1Pa-xh-uMH" secondAttribute="leading" constant="17" id="gMd-fV-Bxd"/>
                             <constraint firstItem="8TM-ui-FPg" firstAttribute="trailing" secondItem="1Pa-xh-uMH" secondAttribute="trailingMargin" id="iVS-Qt-Rya"/>
+                            <constraint firstItem="Zee-1c-ieD" firstAttribute="top" secondItem="KhS-QU-Zey" secondAttribute="bottom" constant="20" id="iZc-Ph-xcC"/>
                             <constraint firstItem="dXP-DN-aG3" firstAttribute="top" secondItem="pEw-qO-H81" secondAttribute="bottom" constant="8" symbolic="YES" id="j8F-nS-YF5"/>
                             <constraint firstItem="vyH-2M-eCv" firstAttribute="top" secondItem="9Hb-ph-ihf" secondAttribute="bottom" constant="8.5" id="lSP-fH-F7W"/>
                             <constraint firstItem="pEw-qO-H81" firstAttribute="top" secondItem="Ko7-m7-Lu8" secondAttribute="bottom" constant="8" symbolic="YES" id="mj8-Lk-6WO"/>
                             <constraint firstAttribute="trailing" secondItem="pEw-qO-H81" secondAttribute="trailing" constant="15.5" id="qgX-YC-HNs"/>
                             <constraint firstItem="pEw-qO-H81" firstAttribute="leading" secondItem="1Pa-xh-uMH" secondAttribute="leading" constant="17" id="r2G-g1-2zc"/>
                             <constraint firstItem="9Hb-ph-ihf" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="u6K-Zw-llO"/>
+                            <constraint firstItem="KhS-QU-Zey" firstAttribute="leading" secondItem="1Pa-xh-uMH" secondAttribute="leadingMargin" constant="-23" id="v7F-yj-HrT"/>
                             <constraint firstItem="5fG-f0-aS1" firstAttribute="centerX" secondItem="1Pa-xh-uMH" secondAttribute="centerX" id="y3s-m5-LJb"/>
+                            <constraint firstItem="KhS-QU-Zey" firstAttribute="top" secondItem="vyH-2M-eCv" secondAttribute="bottom" constant="13.5" id="y8y-no-ZFH"/>
                             <constraint firstItem="8TM-ui-FPg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1Pa-xh-uMH" secondAttribute="leading" constant="20" symbolic="YES" id="yqj-1g-OLQ"/>
                             <constraint firstItem="5fG-f0-aS1" firstAttribute="top" secondItem="MGv-HC-xkX" secondAttribute="bottom" constant="72" id="z1d-4d-R4X"/>
                         </constraints>
@@ -714,6 +774,10 @@ ID</string>
                     <tabBarItem key="tabBarItem" title="Send" image="paperplane" catalog="system" selectedImage="paperplane" id="6mH-To-MWt"/>
                     <connections>
                         <outlet property="clearAllButton" destination="Zee-1c-ieD" id="3Vq-60-G7b"/>
+                        <outlet property="defaultHoursField" destination="Rgu-ED-PtT" id="eTf-GO-fIy"/>
+                        <outlet property="defaultHoursPopUp" destination="CGp-Ta-38h" id="bjr-I3-ugX"/>
+                        <outlet property="eventNameField" destination="bpz-Xe-A9q" id="ERW-to-kkM"/>
+                        <outlet property="googleControlsView" destination="KhS-QU-Zey" id="GZH-8K-caE"/>
                         <outlet property="googleStatusLabel" destination="Q1d-0i-M1L" id="P5Z-0Z-7KD"/>
                         <outlet property="inventorySwitch" destination="5OA-gV-ZeU" id="pvY-WL-rBa"/>
                         <outlet property="sendReportButton" destination="dXP-DN-aG3" id="yOn-4L-ZBu"/>
@@ -1747,22 +1811,25 @@ Long</string>
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.53333333333333333" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemFillColor">
+            <color red="0.47058823529999999" green="0.47058823529999999" blue="0.50196078430000002" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

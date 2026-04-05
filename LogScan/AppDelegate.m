@@ -47,6 +47,7 @@
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(nullable NSDictionary<UIApplicationLaunchOptionsKey, id> *)launchOptions API_AVAILABLE(ios(6.0))
 {
 	srand((unsigned int)time(NULL));
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"defaultHours" : @2.0 }];
 	return YES;
 }
 

@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // \"\"' | grep -qE '\\.(storyboard|xib)$' && echo '{\"decision\": \"block\", \"reason\": \"Direct edits to .storyboard and .xib files are blocked. Use Xcode Interface Builder to modify these files.\"}' || true"
+          }
+        ]
+      }
+    ]
+  }
+}

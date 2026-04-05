@@ -1,0 +1,1 @@
+This is an open source, Objective-C iPadOS UIKit app using traditional Apple coding conventions. Navigation is storyboard-based. If any storyboard or xib edit is needed, tell me (the developer) and I'll do it in Xcode 26. Coding convention: Opening braces on separate line. But don't reformat existing code.

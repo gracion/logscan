@@ -350,7 +350,7 @@
 				TargetAttributes = {
 					DACE1A401AE9C31D00981F9E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 2F2U9294B6;
+						DevelopmentTeam = L5639QXRH4;
 					};
 					DACE1A5F1AE9C31D00981F9E = {
 						CreatedOnToolsVersion = 6.2;
@@ -599,7 +599,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = 2F2U9294B6;
+				DEVELOPMENT_TEAM = L5639QXRH4;
 				INFOPLIST_FILE = LogScan/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -619,7 +619,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = 2F2U9294B6;
+				DEVELOPMENT_TEAM = L5639QXRH4;
 				INFOPLIST_FILE = LogScan/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
