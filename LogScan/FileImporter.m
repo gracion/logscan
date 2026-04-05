@@ -36,6 +36,9 @@ NSString * const kCSVFileDateFormat = @"yyyy-MM-dd HH:mm";
 
 - (NSMutableArray *)cellsFromLine:(NSString *)line
 {
+	// Strip CR and other line-ending characters left by Windows-format CSV files
+	line = [line stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
 	// csv can quote commas, so... break into quoted and unquoted parts, then by comma in unquoted parts
 	NSArray *qparts = [line componentsSeparatedByString:@"\""];
 	// Product,101,2015-11-15,"Radio, Kenwood","Fake, Example",fake2,"Fake2, Example",fake3

@@ -103,13 +103,14 @@ extern NSString * const kCSVFileDateFormat;
 
 - (void)copyStatusLabel:(UILongPressGestureRecognizer *)recognizer
 {
-	 if (recognizer.state == UIGestureRecognizerStateBegan)
-		 [UIPasteboard generalPasteboard].string = self.googleStatusLabel.text;
-	// TODO: This isn't actually a visible effect
-	self.googleStatusLabel.backgroundColor = [UIColor systemBlueColor];
-	  [UIView animateWithDuration:0.6 animations:^{
-		  self.googleStatusLabel.backgroundColor = [UIColor clearColor];
-	  }];
+	if (recognizer.state == UIGestureRecognizerStateBegan)
+	{
+		[UIPasteboard generalPasteboard].string = self.googleStatusLabel.text;
+		self.googleStatusLabel.alpha = 0.2;
+		[UIView animateWithDuration:0.6 animations:^{
+			self.googleStatusLabel.alpha = 1.0;
+		}];
+	}
 }
 
 
@@ -139,6 +140,7 @@ extern NSString * const kCSVFileDateFormat;
 
 - (void)applyDefaultHours:(double)hours
 {
+	if (hours < 0.5) hours = 0.5;
 	[[NSUserDefaults standardUserDefaults] setDouble:hours forKey:@"defaultHours"];
 	[self configureDefaultHoursPopUp];
 }
@@ -378,7 +380,8 @@ extern NSString * const kCSVFileDateFormat;
 
 
 /// Convert a simple positional CSV string into Apps Script JSON:
-/// { "rows": [ [DateIn, TimeIn, DateOut, TimeOut, PersonID, Surname, GivenName, CellPhone], ... ] }
+/// { "rows": [ [DateIn, TimeIn, DateOut, TimeOut, PersonID, Surname, GivenName, CellPhone, hours,
+///  Event Name], ... ] }
 ///
 /// Assumptions:
 /// - First non-empty line is a header
