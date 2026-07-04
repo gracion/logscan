@@ -144,6 +144,8 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
 	searchBar.text = @"";
+	self.people = @[];
+	[self.tableView reloadData];
 }
 
 
